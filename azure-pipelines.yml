@@ -36,12 +36,11 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: DockerInstaller@0
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: DockerCompose@0
+    dockerVersion: '17.09.0-ce'
+    
+- task: DockerCompose@1
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
@@ -51,14 +50,14 @@ steps:
       $(imageRepository):$(tag)
       $(imageRepository):latest
 
-- task: DockerCompose@0
+- task: DockerCompose@1
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
     dockerComposeFile: '**/docker-compose.yml'
     action: 'Push services'
 
-- task: DockerCompose@0
+- task: DockerCompose@1
   inputs:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
