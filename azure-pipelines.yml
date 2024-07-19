@@ -3,7 +3,7 @@ trigger:
 - dev
 
 pool:
-  vmImage: 'windows-latest'
+  name: 'self-hosted-HMSBE'
 
 variables:
   dockerRegistryServiceConnection: 'DokcerHub'
