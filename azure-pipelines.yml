@@ -1,0 +1,66 @@
+trigger:
+- main
+- dev
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  dockerRegistryServiceConnection: 'DokcerHub'
+  imageRepository: 'savindyaa/hms-webapp'
+  containerRegistry: 'savindyaa'
+  tag: '$(Build.BuildId)'
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: 'latest'
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Build services'
+    additionalImageTags: |
+      $(imageRepository):$(tag)
+      $(imageRepository):latest
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Push services'
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+    dockerComposeFile: '**/docker-compose.yml'
+    action: 'Run services'
