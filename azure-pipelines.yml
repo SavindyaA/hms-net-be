@@ -45,6 +45,7 @@ steps:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
     dockerComposeFile: '**/docker-compose.yml'
+    projectName: 'HMS'
     action: 'Build services'
     additionalImageTags: |
       $(imageRepository):$(tag)
@@ -55,6 +56,7 @@ steps:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
     dockerComposeFile: '**/docker-compose.yml'
+    projectName: 'HMS'
     action: 'Push services'
 
 - task: DockerCompose@1
@@ -62,4 +64,5 @@ steps:
     containerregistrytype: 'Container Registry'
     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
     dockerComposeFile: '**/docker-compose.yml'
+    projectName: 'HMS'
     action: 'Run services'
