@@ -16,6 +16,7 @@ services:
       retries: 5
 
   webapp:
+    image: ${imageRepository}:${tag}  # Explicitly define the image name and tag
     build:
       context: .
       dockerfile: Dockerfile
