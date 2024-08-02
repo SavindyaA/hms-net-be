@@ -6,7 +6,7 @@ pool:
   name: 'self-hosted-HMSBE'
 
 variables:
-  dockerRegistryServiceConnection: 'DokcerHub'
+  dockerRegistryServiceConnection: 'DockerHub'
   imageRepository: 'savindyaa/hms-webapp'
   containerRegistry: 'savindyaa'
   tag: '$(Build.BuildId)'
@@ -49,8 +49,8 @@ steps:
     projectName: 'hms'
     action: 'Build services'
     additionalImageTags: |
-      savindyaa/hms-webapp:$(tag)
-      savindyaa/hms-webapp:latest
+      'savindyaa/hms-webapp:$(tag)'
+      'savindyaa/hms-webapp:latest'
 
 - task: DockerCompose@1
   inputs:
