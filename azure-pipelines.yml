@@ -36,9 +36,10 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: DockerInstaller@0
-  inputs:
-    dockerVersion: '17.09.0-ce'
+# Remove the DockerInstaller task if Docker version is already correct
+# - task: DockerInstaller@0
+#   inputs:
+#     dockerVersion: '26.0.0'
     
 - task: DockerCompose@1
   inputs:
