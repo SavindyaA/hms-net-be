@@ -49,8 +49,8 @@ steps:
     projectName: 'hms'
     action: 'Build services'
     additionalImageTags: |
-      $(imageRepository):$(tag)
-      $(imageRepository):latest
+      savindyaa/hms-webapp:$(tag)
+      savindyaa/hms-webapp:latest
 
 - task: DockerCompose@1
   inputs:
