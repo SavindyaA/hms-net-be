@@ -36,6 +36,13 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- script: |
+    echo $(dockerRegistryServiceConnection)
+    echo $(imageRepository)
+    echo $(tag)
+  displayName: 'Print variables for debugging'
+
+
 # Remove the DockerInstaller task if Docker version is already correct
 # - task: DockerInstaller@0
 #   inputs:
@@ -49,8 +56,8 @@ steps:
     projectName: 'hms'
     action: 'Build services'
     additionalImageTags: |
-      'savindyaa/hms-webapp:$(tag)'
-      'savindyaa/hms-webapp:latest'
+      $(imageRepository):$(tag)
+      $(imageRepository):latest
 
 - task: DockerCompose@1
   inputs:
